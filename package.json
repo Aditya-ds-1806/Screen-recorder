@@ -59,8 +59,8 @@
           "name": "@electron-forge/publisher-github",
           "config": {
             "repository": {
-              "owner": "Aditya D.S.",
-              "name": "Screen recorder"
+              "name": "Screen-recorder",
+              "owner": "Aditya-ds-1806"
             }
           }
         }
