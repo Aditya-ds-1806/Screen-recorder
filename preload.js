@@ -1,10 +1,11 @@
-const { desktopCapturer, remote, ipcRenderer } = require('electron');
+const { desktopCapturer, ipcRenderer } = require('electron');
 const { writeFile } = require('fs');
 let mediaRecorder, videoChunks = [];
 
 window.addEventListener('DOMContentLoaded', async () => {
     const start = document.querySelector('#start');
     const stop = document.querySelector('#stop');
+    const refresh = document.querySelector('#refresh');
     const spinner = document.querySelector('.spinner-grow');
     const showThumbnails = (sources) => {
         sources.forEach(source => {
@@ -67,11 +68,14 @@ window.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    const sources = await desktopCapturer.getSources({
-        types: ['screen', 'window'],
-        fetchWindowIcons: true,
-    });
-    showThumbnails(sources);
+    const getMediaSources = () => {
+        return desktopCapturer.getSources({
+            types: ['screen', 'window'],
+            fetchWindowIcons: true,
+        });
+    }
+
+    showThumbnails(await getMediaSources());
 
     start.addEventListener('click', () => {
         mediaRecorder.start();
@@ -83,5 +87,10 @@ window.addEventListener('DOMContentLoaded', async () => {
         mediaRecorder.stop();
         document.querySelector('#start span').textContent = 'Start';
         spinner.classList.add('d-none');
+    });
+
+    refresh.addEventListener('click', async () => {
+        document.querySelector('#windows').innerHTML = '';
+        showThumbnails(await getMediaSources());
     });
 });
