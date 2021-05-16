@@ -20,6 +20,7 @@ function createWindow() {
     });
     win.removeMenu();
     win.loadFile('index.html');
+    if (!app.isPackaged) win.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
